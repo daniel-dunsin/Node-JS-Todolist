@@ -4,6 +4,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const error = require("./utils/errors");
+const authRoutes = require("./routes/auth.route");
+const todoRoutes = require("./routes/todo.route");
 
 // initialize app
 const app = express();
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use(cors());
 
 // routes
+app.use("/api/auth", authRoutes);
+app.use("/api/todos", todoRoutes);
 
 // error handlers
 app.all("*", error.notFound);

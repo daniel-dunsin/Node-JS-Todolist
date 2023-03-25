@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const error = require("./utils/errors");
 
 // initialize app
 const app = express();
@@ -13,6 +14,10 @@ app.use(express.json());
 app.use(cors());
 
 // routes
+
+// error handlers
+app.all("*", error.notFound);
+app.use(error.errorHandler);
 
 const port = process.env.PORT || 5000;
 

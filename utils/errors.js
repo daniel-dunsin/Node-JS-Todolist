@@ -10,10 +10,11 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
+  console.log(err);
   if (err instanceof CustomError) {
     return res.status(err.code).send({ err: err.message });
   }
-  return res.status(500).send({ err: "An internal server error occured!!" });
+  return res.status(500).send({ err });
 };
 
 module.exports = {

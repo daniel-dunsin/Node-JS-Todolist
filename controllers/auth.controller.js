@@ -29,17 +29,20 @@ const login = asyncHandler(async (req, res, next) => {
   if (!username || !password) {
     return next(new CustomError("Please provide username and password", 400));
   }
+
   const user = await User.findOne({ username });
+
   if (!user) {
     return next(new CustomError("User doesn't exist", 404));
   }
+
   const isPasswordMatch = await bcrypt.compare(password, user.password);
   if (!isPasswordMatch) {
     return next(new CustomError("Wrong Password", 400));
   }
   const token = await user.createJWT();
 
-  res.status(201).send({ username: user.username, token });
+  res.status(200).send({ username: user.username, token });
 });
 
 module.exports = {

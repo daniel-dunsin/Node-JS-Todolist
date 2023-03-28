@@ -6,6 +6,7 @@ const cors = require("cors");
 const error = require("./utils/errors");
 const authRoutes = require("./routes/auth.route");
 const todoRoutes = require("./routes/todo.route");
+const isAuth = require("./utils/is_auth");
 
 // initialize app
 const app = express();
@@ -17,7 +18,7 @@ app.use(cors());
 
 // routes
 app.use("/api/auth", authRoutes);
-app.use("/api/todos", todoRoutes);
+app.use("/api/todos", isAuth, todoRoutes);
 
 // error handlers
 app.all("*", error.notFound);

@@ -40,11 +40,32 @@ const getSingleTodo = asyncHandler(async (req, res, next) => {
 });
 
 const updateTodo = asyncHandler(async (req, res, next) => {
-  console.log("route exist");
+  const { id: todoId } = req.params;
+  const todo = await Todo.findOneAndUpdate(
+    { owner: req.user.user_id, _id: todoId },
+    { ...req.body },
+    { new: true, runValidators: true }
+  );
+  if (!todo) {
+    return next(
+      new CustomError("Todo doesn't exist or doesn't belong to you!", 404)
+    );
+  }
+  res.status(200).send({ todo });
 });
 
 const deleteTodo = asyncHandler(async (req, res, next) => {
-  console.log("route exist");
+  const { id } = req.params;
+  const todo = await Todo.findOneAndDelete({
+    owner: req.user.user_id,
+    _id: id,
+  });
+  if (!todo) {
+    return next(
+      new CustomError("Todo doesn't exist or doesn't belong to you!", 404)
+    );
+  }
+  res.status(200).send("Todo deleted");
 });
 
 module.exports = {
